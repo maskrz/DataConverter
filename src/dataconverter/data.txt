@@ -1,0 +1,16 @@
+Indeksy i spolki
+http://www.gpw.pl/notowania_archiwalne_full?type=1&date=2013-10-03
+type = 1 dla indeksow, 10 dla spolek
+
+Kurs dolara i euro
+http://www.nbp.pl/home.aspx?c=/ascx/archa.ascx
+http://www.nbp.pl/home.aspx?f=/kursy/kursya.html
+
+Eurostoxx50
+http://www.investing.com/indices/eu-stoxx50-historical-data
+
+nasdq
+http://www.investing.com/indices/nasdaq-composite-historical-data
+
+dji (us30)
+http://www.investing.com/indices/us-30-historical-data
