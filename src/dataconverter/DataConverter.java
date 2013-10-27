@@ -19,6 +19,8 @@ public class DataConverter {
         reader.readEurostoxx();
         reader.readNasdaq();
         reader.readDji();
+        System.out.println(reader.euro_res + " "+reader.dollar_res + " "+reader.eurostoxx_res 
+                + " "+reader.nasdaq_res + " "+reader.dji_res);
 //        System.out.println(reader.euro_res);
 
     }
