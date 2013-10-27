@@ -32,8 +32,14 @@ public class Reader {
     BufferedReader buff;
     InputStreamReader inStream;
     Pattern CURRENCY;
-    String euro_res = "";
-    String dollar_res = "";
+    Pattern EUROSTOXX;
+    Pattern NASDAQ;
+    Pattern DJI;
+    String euro_res;
+    String dollar_res;
+    String eurostoxx_res;
+    String nasdaq_res;
+    String dji_res;
     boolean euro_found;
     boolean dollar_found;
 
@@ -43,6 +49,9 @@ public class Reader {
         date = dateFormat.format(d);
         euro_found = false;
         dollar_found = false;
+        euro_res = "N/A";
+        dollar_res = "N/A";
+        eurostoxx_res = "N/A";
         //System.out.println(date);
     }
 
@@ -64,18 +73,20 @@ public class Reader {
         try {
             buff = getConnection(url);
             String line = buff.readLine();
-            
+
             while (line != null && !euro_found && !dollar_found) {
                 if (line.contains(euroReg)) {
+                    euro_found = true;
                     Matcher m = CURRENCY.matcher(line);
                     if (m.find()) {
-                        euro_res = m.group(0);
+                        euro_res = m.group(0).replace(",", ".");
                     }
                 }
                 if (line.contains(dollarReg)) {
                     Matcher m = CURRENCY.matcher(line);
+                    dollar_found = true;
                     if (m.find()) {
-                        dollar_res = m.group(0);
+                        dollar_res = m.group(0).replace(",", ".");
                     }
                 }
                 line = buff.readLine();
@@ -85,11 +96,107 @@ public class Reader {
 
     }
 
+    public void readEurostoxx() {
+        File conf = new File("src/conf_files/EuroStoxx50.conf");
+        Scanner sc = null;
+        try {
+            sc = new Scanner(conf);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Reader.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        String url = sc.nextLine();
+        String stockReg = sc.nextLine();
+        EUROSTOXX = Pattern.compile(sc.nextLine());
+        Matcher m;
+
+        try {
+            buff = getConnection(url);
+            String line = buff.readLine();
+
+            while (line != null) {
+                if (line.contains(stockReg)) {
+                    m = EUROSTOXX.matcher(line);
+
+                    if (m.find()) {
+                        eurostoxx_res = m.group(0).replace(",", "");
+                    }
+                }
+                line = buff.readLine();
+            }
+        } catch (Exception e) {
+        };
+    }
+    
+    public void readNasdaq() {
+        File conf = new File("src/conf_files/Nasdaq.conf");
+        Scanner sc = null;
+        try {
+            sc = new Scanner(conf);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Reader.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        String url = sc.nextLine();
+        String stockReg = sc.nextLine();
+        NASDAQ = Pattern.compile(sc.nextLine());
+        Matcher m;
+
+        try {
+            buff = getConnection(url);
+            String line = buff.readLine();
+
+            while (line != null) {
+                if (line.contains(stockReg)) {
+                    m = NASDAQ.matcher(line);
+
+                    if (m.find()) {
+                        nasdaq_res = m.group(0).replace(",", "");
+                    }
+                }
+                line = buff.readLine();
+            }
+        } catch (Exception e) {
+        };
+    }
+    
+    public void readDji() {
+        File conf = new File("src/conf_files/Dji.conf");
+        Scanner sc = null;
+        try {
+            sc = new Scanner(conf);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Reader.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        String url = sc.nextLine();
+        String stockReg = sc.nextLine();
+        DJI = Pattern.compile(sc.nextLine());
+        Matcher m;
+
+        try {
+            buff = getConnection(url);
+            String line = buff.readLine();
+
+            while (line != null) {
+                if (line.contains(stockReg)) {
+                    m = DJI.matcher(line);
+
+                    if (m.find()) {
+                        dji_res = m.group(0).replace(",", "");
+                        System.out.println(dji_res);
+                    }
+                }
+                line = buff.readLine();
+            }
+        } catch (Exception e) {
+        };
+    }
+
     private BufferedReader getConnection(String url_a) {
-            URL url;
+        URL url;
         try {
             url = new URL(url_a);
             URLConnection urlConnection = (URLConnection) url.openConnection();
+            urlConnection.addRequestProperty("User-Agent",
+                    "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)");
             inStream = new InputStreamReader(urlConnection.getInputStream());
             return new BufferedReader(inStream);
         } catch (Exception ex) {

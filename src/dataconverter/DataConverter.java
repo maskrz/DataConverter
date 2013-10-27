@@ -16,6 +16,10 @@ public class DataConverter {
     public static void main(String[] args) {
         Reader reader = new Reader();
         reader.readEuroAndDollar();
-    	
+        reader.readEurostoxx();
+        reader.readNasdaq();
+        reader.readDji();
+//        System.out.println(reader.euro_res);
+
     }
 }
