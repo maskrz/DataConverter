@@ -14,7 +14,8 @@ public class DataConverter {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
-    	println("text");
+        Reader reader = new Reader();
+        reader.readEuroAndDollar();
+    	
     }
 }
