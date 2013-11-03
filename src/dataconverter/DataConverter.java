@@ -4,15 +4,9 @@
  */
 package dataconverter;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
  *
- * @author Skrzypek
+ * @author Skrzypek & Bart
  */
 public class DataConverter {
 
@@ -21,13 +15,19 @@ public class DataConverter {
      */
     public static void main(String[] args) {
         Reader reader = new Reader();
+        reader.readIndices();
+        reader.readCompanies();
         reader.readEuroAndDollar();
         reader.readEurostoxx();
         reader.readNasdaq();
         reader.readDji();
-        String save = reader.euro_res + " "+reader.dollar_res + " "+reader.eurostoxx_res 
-                + " "+reader.nasdaq_res + " "+reader.dji_res;
-        System.out.println(save);
+//        String save = reader.euro_res + " "+reader.dollar_res + " "+reader.eurostoxx_res 
+//                + " "+reader.nasdaq_res + " "+reader.djia_res;
+//        System.out.println(save);
+        reader.setResults();
+        Writer w = new Writer(reader);
+        w.prepareData();
+        w.save();
         
     }
 }
