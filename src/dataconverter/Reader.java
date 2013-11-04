@@ -175,7 +175,7 @@ public class Reader {
 
     }
 
-    public void showList(ArrayList<Node> list) {
+    private void showList(ArrayList<Node> list) {
         for (Node node : list) {
             System.out.println(node.key + " " + node.value);
         }

@@ -149,4 +149,24 @@ public class ReaderTest {
         // TODO review the generated test code and remove the default call to fail.
     }
     
+    @Test
+    public void testReadIndices() {
+        System.out.println("readIndices");
+        reader.date = "2013-10-10";
+        reader.readIndices();
+        Assert.assertEquals(27, reader.indices.size());
+        Assert.assertEquals("RESPECT", reader.indices.get(2).key);
+        Assert.assertEquals("2650.07;719369.58", reader.indices.get(2).value);
+    }
+    
+    @Test
+    public void testReadCompanies() {
+        System.out.println("readCompanies");
+        reader.date = "2013-10-10";
+        reader.readCompanies();
+        Assert.assertEquals(351, reader.companies.size());
+        Assert.assertEquals("PL4FNMD00013", reader.companies.get(2).key);
+        Assert.assertEquals("19.00;598;7;11.36", reader.companies.get(2).value);
+    }
+    
 }

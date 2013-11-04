@@ -69,7 +69,7 @@ public class Writer {
             n.saveNode(path+"indices/", year, date);
         }
         for (Node n : companies) {
-            n.saveNode(path+"companies"+"/"+n.key+"/", year, date);
+            n.saveNode(path+"companies/", year, date);
         }
     }
 

@@ -66,22 +66,60 @@ public class WriterTest {
         Node n;
         n = new Node("testKey", "testValue");
         datas.add(n);
-        File f = new File("src\\datasCopy\\testKey\\testKey_2013.csv");
+        File f = new File("src\\datas\\testKey\\testKey_2013.csv");
         Scanner sc = new Scanner(f);
-        int counter = 0;
+        int counterDatas = 0;
         while(sc.hasNext()) {
-            counter ++;
+            counterDatas ++;
+            sc.nextLine();
+        }
+        ArrayList<Node> indices = new ArrayList();
+        n = new Node("testIndexKey", "testIndexValue");
+        indices.add(n);
+        f = new File("src\\datas\\indices\\testIndexKey\\testIndexKey_2013.csv");
+        sc = new Scanner(f);
+        int counterIndices = 0;
+        while(sc.hasNext()) {
+            counterIndices ++;
+            sc.nextLine();
+        }
+        ArrayList<Node> companies = new ArrayList();
+        n = new Node("testCompanyKey", "testCompanyValue");
+        companies.add(n);
+        f = new File("src\\datas\\companies\\testCompanyKey\\testCompanyKey_2013.csv");
+        sc = new Scanner(f);
+        int counterCompanies = 0;
+        while(sc.hasNext()) {
+            counterCompanies ++;
             sc.nextLine();
         }
         writer.datas = datas;
+        writer.indices = indices;
+        writer.companies = companies;
         writer.save();
-        f = new File("src\\datasCopy\\testKey\\testKey_2013.csv");
+        f = new File("src\\datas\\testKey\\testKey_2013.csv");
         sc = new Scanner(f);
-        int counter2 = 0;
+        int counterDatas2 = 0;
         while(sc.hasNext()) {
-            counter2 ++;
+            counterDatas2 ++;
             sc.nextLine();
         }
-        Assert.assertEquals(counter+1, counter2);
+        f = new File("src\\datas\\indices\\testIndexKey\\testIndexKey_2013.csv");
+        sc = new Scanner(f);
+        int counterIndices2 = 0;
+        while(sc.hasNext()) {
+            counterIndices2 ++;
+            sc.nextLine();
+        }
+        f = new File("src\\datas\\companies\\testCompanyKey\\testCompanyKey_2013.csv");
+        sc = new Scanner(f);
+        int counterCompanies2 = 0;
+        while(sc.hasNext()) {
+            counterCompanies2 ++;
+            sc.nextLine();
+        }
+        Assert.assertEquals(counterDatas+1, counterDatas2);
+        Assert.assertEquals(counterIndices+1, counterIndices2);
+        Assert.assertEquals(counterCompanies+1, counterCompanies2);
     }
 }
