@@ -10,11 +10,13 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Properties;
 import java.util.Scanner;
@@ -55,6 +57,7 @@ public class Reader {
         d = new Date();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         date = dateFormat.format(d);
+//        date = "2013-11-07";
         euro_found = false;
         dollar_found = false;
         euro_res = "N/A";
@@ -76,6 +79,7 @@ public class Reader {
             int n = Integer.valueOf(indicesList[0]);
             String url = prop.getProperty("url");
             buff = getConnection(url + date);
+            System.out.println(url+date);
             String line = buff.readLine();
             String checkLine = prop.getProperty("checkLine");
             int lineVal = Integer.valueOf(prop.getProperty("lineVal"));
@@ -83,8 +87,9 @@ public class Reader {
             while (line != null) {
                 //            System.out.println(line);
                 if (line.contains(checkLine)) {
-                    for (int i = 1; i < n; i++) {
+                    for (int i = 1; i < n+1; i++) {
                         String temp = indicesList[i];
+                        System.out.println(temp);
                         if (line.contains(temp + "<")) {
                             String key = temp;
                             String value = "";
@@ -109,14 +114,13 @@ public class Reader {
                 line = buff.readLine();
             }
             fillEmptyValues(indices, indicesList, 'i');
+            buff.close();
 //            showList(indices);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Reader.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(Reader.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-
     }
     
     public void readCompanies() {
@@ -131,10 +135,11 @@ public class Reader {
             int lineVal = Integer.valueOf(prop.getProperty("lineVal"));
             int lineVolume = Integer.valueOf(prop.getProperty("lineVolume"));
             while (line != null) {
-                //            System.out.println(line);
+//                            System.out.println(line);
                 if (line.contains(checkLine)) {
-                    for (int i = 1; i < n; i++) {
+                    for (int i = 1; i <= n; i++) {
                         String temp = companiesList[i];
+//                        System.out.println(temp);
                         if (line.contains(temp + "<")) {
                             String key = temp;
                             String value = "";
@@ -165,6 +170,7 @@ public class Reader {
                 line = buff.readLine();
             }
             fillEmptyValues(companies, companiesList, 'c');
+            buff.close();
 //            showList(companies);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Reader.class.getName()).log(Level.SEVERE, null, ex);
@@ -211,6 +217,7 @@ public class Reader {
                 }
                 line = buff.readLine();
             }
+            buff.close();
         } catch (Exception e) {
             e.printStackTrace();
         };
@@ -241,13 +248,23 @@ public class Reader {
     private BufferedReader getConnection(String url_a) {
         URL url;
         try {
+            System.out.println("getting connection");
             url = new URL(url_a);
-            URLConnection urlConnection = (URLConnection) url.openConnection();
+            System.out.println("getting connection2");
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            System.out.println("getting connection3");
+            urlConnection.setConnectTimeout(10000);
+            urlConnection.setRequestMethod("GET");
             urlConnection.addRequestProperty("User-Agent",
-                    "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)");
+                    "Mozilla/5.0 (X11; U; Linux i586; en-US; rv:1.7.3) Gecko/20040924 "
+                    + "Epiphany/1.4.4 (Ubuntu)");
+            System.out.println("getting connection4");
+            urlConnection.connect();
             inStream = new InputStreamReader(urlConnection.getInputStream());
+            System.out.println("getting connection5");
             return new BufferedReader(inStream);
         } catch (Exception ex) {
+            System.out.println("getting connection ERROR");
             Logger.getLogger(Reader.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
@@ -282,6 +299,7 @@ public class Reader {
                 }
                 line = buff.readLine();
             }
+            buff.close();
         } catch (Exception e) {
         };
         return "N/A";
@@ -301,7 +319,7 @@ public class Reader {
 
     private void fillEmptyValues(ArrayList<Node> nodesList, String[] list, char type) {
         int n = Integer.valueOf(list[0]);
-        for(int i = 1; i < n; i++) {
+        for(int i = 1; i < n+1; i++) {
             String temp = list[i];
             boolean found = false;
             for(Node node : nodesList) {

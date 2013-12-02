@@ -118,7 +118,7 @@ public class WriterTest {
             counterCompanies2 ++;
             sc.nextLine();
         }
-        Assert.assertEquals(counterDatas+1, counterDatas2);
+        Assert.assertEquals(counterDatas, counterDatas2);
         Assert.assertEquals(counterIndices+1, counterIndices2);
         Assert.assertEquals(counterCompanies+1, counterCompanies2);
     }

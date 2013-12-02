@@ -18,10 +18,12 @@ import java.util.logging.Logger;
 public class Node {
     String key;
         String value;
+        String newline;
 
         public Node(String key, String value) {
             this.key = key;
             this.value = value;
+            newline = System.getProperty("line.separator");
         }
 
         public String getKey() {
@@ -37,7 +39,7 @@ public class Node {
             PrintWriter out = null;
             try {
                 out = new PrintWriter(new BufferedWriter(new FileWriter(path + key + "/" + key + "_" + year + ".csv", true)));
-                out.println(date + ";" + value);
+                out.print(date + ";" + value+"\r\n");
                 out.close();
             } catch (IOException ex) {
                 Logger.getLogger(Writer.class.getName()).log(Level.SEVERE, null, ex);
